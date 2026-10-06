@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kokoro Café · Socios</title>
+<meta name="description" content="Tu tarjeta de socio de Kokoro Café: sellos, promociones y tu código QR.">
+<meta name="theme-color" content="#F5EBE1">
+<meta name="color-scheme" content="light only">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kokoro">
+<link rel="icon" id="favicon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Generador de QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<!-- Lector de QR con cámara (para la caja) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" defer></script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+
+<!-- ===================== ICONOS ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M14 20.5h.01M17 21h4v-4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="i-register" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="11" rx="2"/><path d="M7 10V5h10v5M7 14h2M11 14h2M15 14h2M7 17.5h10"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 21h18M6 17v-6M11 17V6M16 17v-4M21 17V9"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2.4.6 4 2.4 4 5.4"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M5 8h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V8zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8.5 2.5v3M12.5 2.5v3"/></symbol>
+  <symbol id="i-percent" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M7 12h10"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8S11 3 8 3a2.5 2.5 0 0 0 0 5M12 8s1-5 4-5a2.5 2.5 0 0 1 0 5"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+  <symbol id="i-google" viewBox="0 0 24 24"><path fill="#4285F4" stroke="none" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" stroke="none" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" stroke="none" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9l3.3-2.5z"/><path fill="#EA4335" stroke="none" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z"/></symbol>
+</svg>
+
+<!-- ===================== CARGA ===================== -->
+<div class="boot" id="boot" aria-live="polite">
+  <b lang="ja" aria-hidden="true">心</b>
+  <span>Preparando tu tarjeta</span>
+</div>
+
+<!-- ===================== ACCESO ===================== -->
+<section class="view auth" id="view-auth" hidden>
+  <div class="auth__art" aria-hidden="true"><span lang="ja">心</span></div>
+  <div class="auth__panel">
+    <div class="auth__brand"><img class="logo" data-logo alt="" width="56" height="56"><span>KOKORO</span></div>
+    <h1 class="auth__title" id="authTitle">Tu café, con memoria.</h1>
+    <p class="auth__lead">Junta sellos con cada café, recibe promociones de socio y paga más rápido mostrando tu código en caja.</p>
+
+    <div class="seg" role="tablist" aria-label="Acceso">
+      <button type="button" class="seg__btn is-on" role="tab" aria-selected="true" data-auth-tab="login">Entrar</button>
+      <button type="button" class="seg__btn" role="tab" aria-selected="false" data-auth-tab="registro">Crear cuenta</button>
+    </div>
+
+    <form class="form" id="formLogin" novalidate>
+      <label class="field"><span>Correo</span><input type="email" name="email" autocomplete="email" required></label>
+      <label class="field"><span>Contraseña</span><input type="password" name="password" autocomplete="current-password" required minlength="6"></label>
+      <p class="form__error" role="alert"></p>
+      <button class="btn btn--block" type="submit">Entrar</button>
+      <button class="link" type="button" id="btnOlvide">Olvidé mi contraseña</button>
+    </form>
+
+    <form class="form" id="formRegistro" novalidate hidden>
+      <label class="field"><span>Nombre</span><input type="text" name="nombre" autocomplete="name" required maxlength="60"></label>
+      <label class="field"><span>Teléfono <small>opcional</small></span><input type="tel" name="telefono" autocomplete="tel" inputmode="tel" maxlength="20"></label>
+      <label class="field"><span>Correo</span><input type="email" name="email" autocomplete="email" required></label>
+      <label class="field"><span>Contraseña</span><input type="password" name="password" autocomplete="new-password" required minlength="6"><small class="field__hint">Mínimo 6 caracteres.</small></label>
+      <p class="form__error" role="alert"></p>
+      <button class="btn btn--block" type="submit">Crear mi cuenta</button>
+    </form>
+
+    <div class="divider"><span>o</span></div>
+    <button class="btn btn--ghost btn--block" type="button" id="btnGoogle"><svg class="ic ic--raw"><use href="#i-google"/></svg>Continuar con Google</button>
+  </div>
+</section>
+
+<!-- ===================== COMPLETAR PERFIL ===================== -->
+<section class="view onboard" id="view-onboard" hidden>
+  <div class="onboard__inner">
+    <img class="logo" data-logo alt="" width="64" height="64">
+    <h1 class="h1">Un último paso.</h1>
+    <p class="muted">Con estos datos creamos tu tarjeta de socio y tu código QR.</p>
+    <form class="form" id="formOnboard" novalidate>
+      <label class="field"><span>Nombre</span><input type="text" name="nombre" autocomplete="name" required maxlength="60"></label>
+      <label class="field"><span>Teléfono <small>opcional</small></span><input type="tel" name="telefono" autocomplete="tel" inputmode="tel" maxlength="20"></label>
+      <p class="form__error" role="alert"></p>
+      <button class="btn btn--block" type="submit">Crear mi tarjeta</button>
+      <button class="link" type="button" data-action="logout">Usar otra cuenta</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===================== APP DEL CLIENTE ===================== -->
+<section class="view cliente" id="view-cliente" hidden>
+  <header class="c-top">
+    <div class="c-top__brand"><img class="logo" data-logo alt="" width="36" height="36"><span>KOKORO</span></div>
+    <button class="chip chip--dark" type="button" id="btnIrPanel" hidden><svg class="ic"><use href="#i-register"/></svg>Panel</button>
+  </header>
+
+  <main class="c-main">
+    <!-- Tarjeta -->
+    <div class="c-pane" id="c-tarjeta" data-cpane="tarjeta">
+      <h1 class="c-hello" id="cHola">Hola.</h1>
+      <p class="muted" id="cSub">Esta es tu tarjeta de socio.</p>
+
+      <div class="reward" id="cReward" hidden>
+        <svg class="ic"><use href="#i-gift"/></svg>
+        <div><b id="cRewardTitle">Tienes un café gratis</b><span>Muestra tu QR en caja para canjearlo.</span></div>
+      </div>
+
+      <article class="stampcard" id="stampcard" aria-label="Tarjeta de sellos">
+        <header class="stampcard__head">
+          <img class="logo" data-logo alt="" width="44" height="44">
+          <div><b>Tarjeta de socio</b><span id="cNombreCard"></span></div>
+          <code id="cCodigo" class="stampcard__code"></code>
+        </header>
+        <ol class="stamps" id="cStamps"></ol>
+        <p class="stampcard__foot" id="cFaltan"></p>
+      </article>
+
+      <dl class="stats">
+        <div><dt>Visitas</dt><dd id="cVisitas">0</dd></div>
+        <div><dt>Sellos en total</dt><dd id="cSellosTot">0</dd></div>
+        <div><dt>Cafés de regalo</dt><dd id="cCanjeados">0</dd></div>
+      </dl>
+
+      <button class="btn btn--block" type="button" data-cgo="qr"><svg class="ic"><use href="#i-qr"/></svg>Mostrar mi QR</button>
+    </div>
+
+    <!-- QR -->
+    <div class="c-pane c-pane--dark" id="c-qr" data-cpane="qr" hidden>
+      <p class="qr__hint">Muéstralo en caja antes de pagar.</p>
+      <div class="qr__tile"><div class="qr__svg" id="cQR"></div></div>
+      <p class="qr__name" id="cQRNombre"></p>
+      <code class="qr__code" id="cQRCodigo"></code>
+      <button class="btn btn--light" type="button" id="btnGuardarQR"><svg class="ic"><use href="#i-download"/></svg>Guardar imagen</button>
+      <p class="qr__tip">Sube el brillo de tu pantalla si el lector no lo detecta.</p>
+    </div>
+
+    <!-- Promociones -->
+    <div class="c-pane" id="c-promos" data-cpane="promos" hidden>
+      <h1 class="h1">Promociones</h1>
+      <p class="muted">Pídelas en caja y muestra tu QR.</p>
+      <ul class="promos" id="cPromos"></ul>
+      <section class="howto">
+        <h2 class="h3">Cómo funciona tu tarjeta</h2>
+        <ol class="howto__steps">
+          <li><b>Muestra tu QR</b> cada vez que compres.</li>
+          <li><b>Ganas un sello</b> <span id="cModoTxt">por cada bebida.</span></li>
+          <li><b>Al juntar <span id="cMetaTxt">8</span></b> te regalamos <span id="cPremioTxt">un café</span>.</li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- Historial -->
+    <div class="c-pane" id="c-historial" data-cpane="historial" hidden>
+      <h1 class="h1">Tus visitas</h1>
+      <ul class="hist" id="cHist"></ul>
+    </div>
+
+    <!-- Perfil -->
+    <div class="c-pane" id="c-perfil" data-cpane="perfil" hidden>
+      <h1 class="h1">Tu perfil</h1>
+      <p class="muted">Dinos cómo te gusta tu café y en barra lo verán al escanear tu QR.</p>
+      <form class="form" id="formPerfil" novalidate>
+        <label class="field"><span>Nombre</span><input type="text" name="nombre" required maxlength="60"></label>
+        <label class="field"><span>Correo</span><input type="email" name="email" disabled></label>
+        <label class="field"><span>Teléfono</span><input type="tel" name="telefono" inputmode="tel" maxlength="20"></label>
+        <label class="field"><span>Cumpleaños</span><input type="date" name="cumpleanos"></label>
+        <label class="field"><span>Bebida favorita</span><input type="text" name="bebidaFavorita" list="bebidas" maxlength="60" placeholder="Por ejemplo, Kokoro americano"></label>
+        <datalist id="bebidas"><option value="Kokoro 12 oz"><option value="Ooki 16 oz"><option value="Americano"><option value="Latte"><option value="Capuchino"><option value="Cold brew"></datalist>
+        <label class="field"><span>Leche</span>
+          <select name="leche"><option value="">Sin preferencia</option><option>Entera</option><option>Deslactosada</option><option>Almendra</option><option>Avena</option><option>Coco</option><option>Sin leche</option></select>
+        </label>
+        <label class="field"><span>Cómo te gusta tu café</span><textarea name="notas" rows="3" maxlength="200" placeholder="Poco azúcar, extra caliente…"></textarea></label>
+        <p class="form__error" role="alert"></p>
+        <button class="btn btn--block" type="submit">Guardar cambios</button>
+      </form>
+      <button class="btn btn--ghost btn--block" type="button" data-action="logout"><svg class="ic"><use href="#i-logout"/></svg>Cerrar sesión</button>
+    </div>
+  </main>
+
+  <nav class="tabbar" aria-label="Secciones">
+    <button type="button" class="tabbar__btn is-on" data-cgo="tarjeta"><svg class="ic"><use href="#i-card"/></svg><span>Tarjeta</span></button>
+    <button type="button" class="tabbar__btn" data-cgo="promos"><svg class="ic"><use href="#i-tag"/></svg><span>Promos</span></button>
+    <button type="button" class="tabbar__btn tabbar__btn--qr" data-cgo="qr" aria-label="Mi QR"><svg class="ic"><use href="#i-qr"/></svg></button>
+    <button type="button" class="tabbar__btn" data-cgo="historial"><svg class="ic"><use href="#i-clock"/></svg><span>Visitas</span></button>
+    <button type="button" class="tabbar__btn" data-cgo="perfil"><svg class="ic"><use href="#i-user"/></svg><span>Perfil</span></button>
+  </nav>
+</section>
+
+<!-- ===================== PANEL ADMIN / PUNTO DE VENTA ===================== -->
+<section class="view admin" id="view-admin" hidden>
+  <aside class="side">
+    <div class="side__brand"><img class="logo" data-logo alt="" width="38" height="38"><div><b>KOKORO</b><span>Punto de venta</span></div></div>
+    <nav class="side__nav" aria-label="Panel">
+      <button type="button" class="side__btn is-on" data-apane="caja"><svg class="ic"><use href="#i-register"/></svg><span>Caja</span></button>
+      <button type="button" class="side__btn" data-apane="resumen"><svg class="ic"><use href="#i-chart"/></svg><span>Resumen</span></button>
+      <button type="button" class="side__btn" data-apane="ventas"><svg class="ic"><use href="#i-list"/></svg><span>Ventas</span></button>
+      <button type="button" class="side__btn" data-apane="clientes"><svg class="ic"><use href="#i-users"/></svg><span>Clientes</span></button>
+      <button type="button" class="side__btn" data-apane="productos"><svg class="ic"><use href="#i-cup"/></svg><span>Productos</span></button>
+      <button type="button" class="side__btn" data-apane="promociones"><svg class="ic"><use href="#i-percent"/></svg><span>Promociones</span></button>
+      <button type="button" class="side__btn" data-apane="ajustes"><svg class="ic"><use href="#i-sliders"/></svg><span>Programa</span></button>
+    </nav>
+    <div class="side__foot">
+      <span class="side__who" id="aWho"></span>
+      <button type="button" class="side__link" id="btnVerTarjeta"><svg class="ic"><use href="#i-card"/></svg><span>Mi tarjeta</span></button>
+      <button type="button" class="side__link" data-action="logout"><svg class="ic"><use href="#i-logout"/></svg><span>Salir</span></button>
+    </div>
+  </aside>
+
+  <main class="a-main">
+    <!-- CAJA -->
+    <section class="a-pane pos" data-apane-id="caja">
+      <div class="pos__menu">
+        <div class="a-head">
+          <h1 class="h1">Caja</h1>
+          <div class="chips" id="posCats"></div>
+        </div>
+        <div class="pgrid" id="posGrid"></div>
+      </div>
+
+      <aside class="ticket" aria-label="Ticket">
+        <div class="ticket__cliente" id="tkCliente"></div>
+
+        <ul class="ticket__items" id="tkItems"></ul>
+
+        <div class="ticket__opts">
+          <label class="check" id="tkRecompensaWrap" hidden>
+            <input type="checkbox" id="tkRecompensa">
+            <span><b id="tkRecompensaTxt">Canjear café gratis</b><small id="tkRecompensaSub"></small></span>
+          </label>
+          <label class="field field--inline"><span>Descuento</span><select id="tkDescuento"></select></label>
+        </div>
+
+        <dl class="ticket__totals">
+          <div><dt>Subtotal</dt><dd id="tkSubtotal">$0.00</dd></div>
+          <div id="tkRowRec" hidden><dt>Café de regalo</dt><dd id="tkRec"></dd></div>
+          <div id="tkRowDesc" hidden><dt id="tkDescNom">Descuento</dt><dd id="tkDesc"></dd></div>
+          <div class="ticket__total"><dt>Total</dt><dd id="tkTotal">$0.00</dd></div>
+        </dl>
+
+        <div class="seg seg--sm" id="tkMetodo" role="radiogroup" aria-label="Forma de pago">
+          <button type="button" class="seg__btn is-on" data-metodo="efectivo" role="radio" aria-checked="true">Efectivo</button>
+          <button type="button" class="seg__btn" data-metodo="tarjeta" role="radio" aria-checked="false">Tarjeta</button>
+          <button type="button" class="seg__btn" data-metodo="transferencia" role="radio" aria-checked="false">Transferencia</button>
+        </div>
+        <div class="cash" id="tkCash">
+          <label class="field field--inline"><span>Recibido</span><input type="number" id="tkRecibido" min="0" step="1" inputmode="decimal" placeholder="0"></label>
+          <p class="cash__cambio">Cambio <b id="tkCambio">$0.00</b></p>
+        </div>
+
+        <p class="ticket__sellos" id="tkSellosTxt"></p>
+        <div class="ticket__actions">
+          <button type="button" class="btn btn--ghost" id="btnVaciar">Vaciar</button>
+          <button type="button" class="btn" id="btnCobrar" disabled>Cobrar</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- RESUMEN -->
+    <section class="a-pane" data-apane-id="resumen" hidden>
+      <div class="a-head">
+        <h1 class="h1">Resumen</h1>
+        <div class="seg seg--sm" data-rango-group="resumen">
+          <button type="button" class="seg__btn is-on" data-rango="hoy">Hoy</button>
+          <button type="button" class="seg__btn" data-rango="7">7 días</button>
+          <button type="button" class="seg__btn" data-rango="30">30 días</button>
+        </div>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="a-grid2">
+        <section class="box"><h2 class="h3" id="chartTitle">Ventas por hora</h2><div class="bars" id="chartBars"></div></section>
+        <section class="box"><h2 class="h3">Socios y público en general</h2><div id="mixBox"></div></section>
+        <section class="box"><h2 class="h3">Corte por forma de pago</h2><table class="tbl tbl--plain" id="tblMetodos"></table></section>
+        <section class="box"><h2 class="h3">Lo más vendido</h2><table class="tbl tbl--plain" id="tblTop"></table></section>
+      </div>
+    </section>
+
+    <!-- VENTAS -->
+    <section class="a-pane" data-apane-id="ventas" hidden>
+      <div class="a-head">
+        <h1 class="h1">Ventas</h1>
+        <div class="a-tools">
+          <div class="seg seg--sm" data-rango-group="ventas">
+            <button type="button" class="seg__btn is-on" data-rango="hoy">Hoy</button>
+            <button type="button" class="seg__btn" data-rango="7">7 días</button>
+            <button type="button" class="seg__btn" data-rango="30">30 días</button>
+          </div>
+          <select id="ventasTipo" aria-label="Tipo de venta"><option value="">Todas</option><option value="socio">Socios</option><option value="publico">Público en general</option><option value="anulada">Anuladas</option></select>
+          <button type="button" class="btn btn--ghost btn--sm" id="btnCSV"><svg class="ic"><use href="#i-download"/></svg>Exportar CSV</button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table class="tbl" id="tblVentas"></table></div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="a-pane" data-apane-id="clientes" hidden>
+      <div class="a-head">
+        <h1 class="h1">Clientes</h1>
+        <div class="a-tools">
+          <label class="search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="cliBuscar" placeholder="Nombre, teléfono, correo o código"></label>
+          <button type="button" class="btn btn--ghost btn--sm" id="btnCliRefresh"><svg class="ic"><use href="#i-refresh"/></svg>Actualizar</button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table class="tbl" id="tblClientes"></table></div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section class="a-pane" data-apane-id="productos" hidden>
+      <div class="a-head">
+        <h1 class="h1">Productos</h1>
+        <button type="button" class="btn btn--sm" id="btnNuevoProducto"><svg class="ic"><use href="#i-plus"/></svg>Nuevo producto</button>
+      </div>
+      <div class="tbl-wrap"><table class="tbl" id="tblProductos"></table></div>
+    </section>
+
+    <!-- PROMOCIONES -->
+    <section class="a-pane" data-apane-id="promociones" hidden>
+      <div class="a-head">
+        <h1 class="h1">Promociones</h1>
+        <button type="button" class="btn btn--sm" id="btnNuevaPromo"><svg class="ic"><use href="#i-plus"/></svg>Nueva promoción</button>
+      </div>
+      <p class="muted">Las promociones activas aparecen en la app de tus clientes y en la caja como descuento.</p>
+      <div class="tbl-wrap"><table class="tbl" id="tblPromos"></table></div>
+    </section>
+
+    <!-- AJUSTES DEL PROGRAMA -->
+    <section class="a-pane" data-apane-id="ajustes" hidden>
+      <div class="a-head"><h1 class="h1">Programa de lealtad</h1></div>
+      <form class="form box form--narrow" id="formAjustes" novalidate>
+        <label class="field"><span>Sellos para ganar un regalo</span><input type="number" name="sellosParaRecompensa" min="3" max="20" step="1" required></label>
+        <label class="field"><span>Cómo se dan los sellos</span>
+          <select name="modoSellos"><option value="porBebida">Un sello por cada bebida</option><option value="porVisita">Un sello por visita</option></select>
+        </label>
+        <label class="field"><span>Nombre del regalo</span><input type="text" name="nombreRecompensa" maxlength="40" required><small class="field__hint">Se descuenta la bebida de mayor precio del ticket.</small></label>
+        <label class="field"><span>Descuento permanente para socios (%)</span><input type="number" name="descuentoSocio" min="0" max="50" step="1"><small class="field__hint">Déjalo en 0 si no quieres un descuento fijo.</small></label>
+        <p class="form__error" role="alert"></p>
+        <button class="btn" type="submit">Guardar programa</button>
+      </form>
+      <section class="box form--narrow note">
+        <h2 class="h3">Agregar personal a la caja</h2>
+        <p>Pide a la persona que cree su cuenta en esta app. Después búscala en Clientes y usa “Dar acceso a la caja”.</p>
+      </section>
+    </section>
+  </main>
+</section>
+
+<!-- ===================== DIÁLOGOS ===================== -->
+<dialog class="dlg" id="dlgScan">
+  <div class="dlg__head"><h2 class="h3">Identificar socio</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <div class="scan" id="scanReader"></div>
+  <p class="muted scan__msg" id="scanMsg">Apunta la cámara al QR del cliente.</p>
+  <form class="scan__manual" id="formCodigo" autocomplete="off">
+    <label class="field"><span>O escribe el código, o usa el lector USB</span><input type="text" name="codigo" id="scanInput" placeholder="KK-XXXXXX" autocapitalize="characters" spellcheck="false"></label>
+    <button class="btn btn--sm" type="submit">Buscar</button>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="dlgBuscar">
+  <div class="dlg__head"><h2 class="h3">Buscar socio</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <label class="search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="buscarInput" placeholder="Nombre, teléfono, correo o código"></label>
+  <ul class="results" id="buscarResultados"></ul>
+</dialog>
+
+<dialog class="dlg dlg--ok" id="dlgVentaOk">
+  <div class="ok" id="ventaOk"></div>
+  <button type="button" class="btn btn--block" data-close>Nueva venta</button>
+</dialog>
+
+<dialog class="dlg dlg--wide" id="dlgCliente">
+  <div class="dlg__head"><h2 class="h3" id="dcNombre">Cliente</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <div id="dcBody"></div>
+</dialog>
+
+<dialog class="dlg" id="dlgVenta">
+  <div class="dlg__head"><h2 class="h3" id="dvTitulo">Venta</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <div id="dvBody"></div>
+</dialog>
+
+<dialog class="dlg" id="dlgProducto">
+  <div class="dlg__head"><h2 class="h3" id="dpTitulo">Producto</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <form class="form" id="formProducto" novalidate>
+    <label class="field"><span>Nombre</span><input type="text" name="nombre" required maxlength="40"></label>
+    <label class="field"><span>Detalle <small>tamaño o descripción corta</small></span><input type="text" name="detalle" maxlength="40" placeholder="12 oz"></label>
+    <div class="form__row">
+      <label class="field"><span>Precio</span><input type="number" name="precio" min="0" step="0.5" required inputmode="decimal"></label>
+      <label class="field"><span>Categoría</span><input type="text" name="categoria" list="categorias" maxlength="30" placeholder="Café"></label>
+    </div>
+    <datalist id="categorias"></datalist>
+    <label class="check"><input type="checkbox" name="otorgaSello"><span><b>Suma sello</b><small>Cuenta para la tarjeta de lealtad y puede canjearse como regalo.</small></span></label>
+    <label class="check"><input type="checkbox" name="activo"><span><b>Disponible en caja</b></span></label>
+    <p class="form__error" role="alert"></p>
+    <button class="btn btn--block" type="submit">Guardar producto</button>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="dlgPromo">
+  <div class="dlg__head"><h2 class="h3" id="dprTitulo">Promoción</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar"><svg class="ic"><use href="#i-x"/></svg></button></div>
+  <form class="form" id="formPromo" novalidate>
+    <label class="field"><span>Título</span><input type="text" name="titulo" required maxlength="50" placeholder="Martes de Ooki"></label>
+    <label class="field"><span>Descripción</span><textarea name="descripcion" rows="2" maxlength="160"></textarea></label>
+    <div class="form__row">
+      <label class="field"><span>Tipo</span><select name="tipo"><option value="porcentaje">Porcentaje</option><option value="monto">Monto fijo ($)</option></select></label>
+      <label class="field"><span>Valor</span><input type="number" name="valor" min="0" step="1" required inputmode="decimal"></label>
+    </div>
+    <label class="check"><input type="checkbox" name="soloSocios"><span><b>Solo socios</b><small>En caja solo aparece si identificaste a un socio.</small></span></label>
+    <label class="check"><input type="checkbox" name="activa"><span><b>Activa</b><small>Visible en la app y en la caja.</small></span></label>
+    <p class="form__error" role="alert"></p>
+    <button class="btn btn--block" type="submit">Guardar promoción</button>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="dlgConfirm">
+  <h2 class="h3" id="cfTitulo"></h2>
+  <p class="muted" id="cfTexto"></p>
+  <div class="dlg__actions">
+    <button type="button" class="btn btn--ghost" value="no" data-close>Cancelar</button>
+    <button type="button" class="btn" id="cfOk">Confirmar</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+  /* Si la app no arranca (por ejemplo, abierta con doble clic desde la carpeta), lo decimos en pantalla. */
+  setTimeout(function () {
+    if (window.__kokoroListo) return;
+    var b = document.querySelector('#boot span');
+    if (b) b.textContent = 'No se pudo cargar la app. Ábrela desde un servidor (https o localhost) y revisa tu conexión.';
+  }, 9000);
+</script>
+</body>
+</html>
